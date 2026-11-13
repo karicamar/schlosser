@@ -1,0 +1,63 @@
+name: Schlosser
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet restore
+      - run: dotnet build --no-restore -c Release -warnaserror
+      - run: dotnet test --no-build -c Release
+      - run: dotnet pack src/Schlosser.Analyzers -c Release --no-build -o nupkg
+      - name: The package carries the analyzers and the code fixes
+        run: |
+          unzip -l nupkg/*.nupkg | grep "analyzers/dotnet/cs/Schlosser.Analyzers.dll"
+          unzip -l nupkg/*.nupkg | grep "analyzers/dotnet/cs/Schlosser.CodeFixes.dll"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schlosser-nupkg
+          path: nupkg/*.nupkg
+
+  # The sample must give exactly the documented findings: all in Vulnerable/, none in Fixed/.
+  sample:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - run: dotnet build samples/VulnerableShop
+      - run: node tools/findings.mjs samples/VulnerableShop/obj/schlosser.sarif samples/VulnerableShop --all --check samples/VulnerableShop/expected-findings.txt
+      # The same SARIF file goes to GitHub Code Scanning, the way a real project would use it
+      - uses: github/codeql-action/upload-sarif@v4
+        if: github.event_name == 'push'
+        continue-on-error: true
+        with:
+          sarif_file: samples/VulnerableShop/obj/schlosser.sarif
+          category: schlosser-sample
+
+  # Contract test against code I did not write: OWASP WebGoat.NET at a pinned commit.
+  webgoat-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - run: bash tools/webgoat-contract.sh

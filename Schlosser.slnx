@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Schlosser.Analyzers/Schlosser.Analyzers.csproj" />
+    <Project Path="src/Schlosser.CodeFixes/Schlosser.CodeFixes.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Schlosser.Tests/Schlosser.Tests.csproj" />
+  </Folder>
+</Solution>

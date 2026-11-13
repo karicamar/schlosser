@@ -1,0 +1,20 @@
+# Every finding of the sample, and nothing in Fixed/. Checked in CI: node tools/findings.mjs ... --check
+SL001 Vulnerable/ProductsController.cs:21
+SL001 Vulnerable/ProductsController.cs:25
+SL001 Vulnerable/ProductsController.cs:32
+SL003 Vulnerable/FilesController.cs:28
+SL004 Vulnerable/FilesController.cs:14
+SL004 Vulnerable/FilesController.cs:19
+SL005 Vulnerable/FilesController.cs:37
+SL006 Vulnerable/FilesController.cs:34
+SL007 Vulnerable/FilesController.cs:40
+SL011 Vulnerable/AccountController.cs:29
+SL022 Vulnerable/AccountController.cs:54
+SL023 Vulnerable/AccountController.cs:39
+SL024 Vulnerable/AccountController.cs:19
+SL025 Vulnerable/AccountController.cs:21
+SL025 Vulnerable/AccountController.cs:40
+SL030 Vulnerable/AccountController.cs:10
+SL036 Vulnerable/AccountController.cs:23
+SL039 Vulnerable/AccountController.cs:18
+SL040 Vulnerable/AccountController.cs:47

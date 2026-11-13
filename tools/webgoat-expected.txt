@@ -1,0 +1,16 @@
+# Findings in OWASP WebGoat.NET (tobyash86/WebGoat.NET at df29d6f), reviewed by hand. See README, "Checked against WebGoat.NET".
+
+SL001 Data/OrderRepository.cs:49                # SQL injection in the checkout, the request reaches it through CheckoutController → OrderRepository
+SL001 Data/OrderRepository.cs:80                # same method, second statement: built from the same order object (over-approximation, see README)
+SL005 Controllers/AccountController.cs:50       # open redirect after login (ReturnUrl)
+SL005 Controllers/CheckoutController.cs:219     # open redirect: unknown carrier becomes the host of the tracking URL
+SL011 Controllers/ProductController.cs:95       # mass assignment: the Product entity is bound from the form
+SL011 Controllers/ProductController.cs:128
+SL012 Views/Blog/Index.cshtml:22                # stored XSS: blog responses are printed with Html.Raw
+SL012 Views/Blog/_BlogEntryPartial.cshtml:5     # stored XSS: blog entries
+SL022 Models/CreditCard.cs:143                  # approval code from System.Random
+SL036 Startup.cs:108                            # session cookie readable by scripts
+SL038 Controllers/StatusCodeController.cs:8     # [IgnoreAntiforgeryToken]
+SL040 Controllers/CartController.cs:85          # exception message shown to the user
+SL041 Startup.cs:81                             # passwords of 2 characters
+SL042 Startup.cs:87                             # no lockout for new accounts
